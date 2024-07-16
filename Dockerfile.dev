@@ -1,0 +1,27 @@
+# Stage 1: Base
+FROM node:18-alpine AS base
+
+# Set working directory
+WORKDIR /app
+
+RUN apk update && apk upgrade
+
+# Install dependencies
+COPY ./package*.json /app/
+RUN npm install && npm cache clean --force
+
+COPY . .
+
+ENV PATH ./node_modules/.bin/:$PATH
+
+# Stage 2: Development
+FROM base AS development
+
+# Expose Nuxt dev port (3000 by default)
+EXPOSE 3000
+
+# Set environment variables
+ENV NODE_ENV=development
+
+# Command to run the dev server
+CMD ["npm", "run", "dev"]

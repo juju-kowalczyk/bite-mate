@@ -5,10 +5,11 @@ services:
     image: mysql:8.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: your_database_name
-      MYSQL_USER: your_database_user
-      MYSQL_PASSWORD: your_database_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: --default-authentication-plugin=caching_sha2_password
     ports:
       - "3306:3306"
     volumes:
@@ -20,19 +21,25 @@ services:
   nuxt:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+      target: development
     container_name: nuxt
     ports:
       - "3000:3000"
     depends_on:
       - mysql
     environment:
-      DB_HOST: mysql
-      DB_USER: your_database_user
-      DB_PASSWORD: your_database_password
-      DB_NAME: your_database_name
+      - NODE_ENV=development
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     networks:
       - app-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+    tty: true
 
 volumes:
   mysql-data:

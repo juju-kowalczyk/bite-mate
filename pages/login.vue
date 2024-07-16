@@ -28,7 +28,7 @@ const handleSubmit = async () => {
   });
   const data = await res.json();
   if (data.token) {
-    localStorage.setItem('token', data.token);
+    // localStorage.setItem('token', data.token);
     router.push('/orders');
   } else {
     alert(data.error || 'An error occurred');

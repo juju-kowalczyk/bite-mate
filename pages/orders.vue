@@ -1,5 +1,6 @@
 <template>
   <div>
+    AAAAAAA
     <form @submit.prevent="addOrder">
       <input v-model="description" type="text" placeholder="Order Description" required />
       <button type="submit">Add Order</button>
@@ -26,7 +27,7 @@ const description = ref('');
 const fetchOrders = async () => {
   const res = await fetch('/api/orders', {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer `,
     },
   });
   const data = await res.json();
@@ -42,7 +43,7 @@ const addOrder = async () => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer `,
     },
     body: JSON.stringify({ description: description.value }),
   });
@@ -56,6 +57,6 @@ const addOrder = async () => {
 };
 
 onMounted(() => {
-  fetchOrders();
+  // fetchOrders();
 });
 </script>
